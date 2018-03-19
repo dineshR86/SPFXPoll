@@ -1,0 +1,18 @@
+{
+  "$schema": "https://dev.office.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "polls-spfx-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/pollsSpfx/PollsSpfxWebPart.js",
+          "manifest": "./src/webparts/pollsSpfx/PollsSpfxWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "PollsSpfxWebPartStrings": "lib/webparts/pollsSpfx/loc/{locale}.js"
+  }
+}

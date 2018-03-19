@@ -1,0 +1,26 @@
+{
+  "$schema": "https://dev.office.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "polls-s-pfx-client-side-solution",
+    "id": "f88a5971-e1e8-4e23-b82c-9dbf3b21bdbe",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "features": [{
+      "title": "Deploy Poll Assets",
+      "description": "Deploys the assets required for Poll App",
+      "id": "523fe887-ced5-4036-b564-8dad5c6c6e24",
+      "version": "1.0.0.0",
+      "assets": {
+        "elementManifests": [
+          "elements.xml"
+        ],
+        "elementFiles":[
+          "schema.xml","schema1.xml"
+        ]
+      }
+    }]
+  },
+  "paths": {
+    "zippedPackage": "solution/polls-s-pfx.sppkg"
+  }
+}
