@@ -193,4 +193,18 @@ export default class MockUpDataProvider implements IDataProvider {
             resolve(items);
         });        
     }
+
+    public getPollLogByUser(userId: number): Promise<number[]> {
+        var items:number[]=[];
+        return new Promise<number[]>((resolve) =>{
+            resolve(items);
+        });  
+    }
+
+    public getCurrentUser(): Promise<any>{
+        var items:number[]=[];
+        return new Promise<number[]>((resolve) =>{
+            resolve(items);
+        });  
+    }
 }

@@ -20,39 +20,58 @@ export default class PollsSpfx extends React.Component<IPollsSpfxProps, IPollSpf
 
   constructor(props: IPollsSpfxProps) {
     super(props);
-
+    console.log("React component constructor");
     this.state = {
       pollItems: []
     };
   }
 
   public componentDidMount() {
-
+    console.log("React component didmount function");
     //this.props.dataProvider.readsPollItemsFromList()
-    this.props.sharepointdataProvider.readsPollItemsFromList()
-      .then(
-        //resolve
-        (items: IPollObject[]) => {
-          this.setState({
-            pollItems: items
-          });
-        },
-        //reject
-        (data: any) => {
-          this.setState({
-            isErrorOccured: true,
-            errorMessage: data
-          });
-        }
-      ).catch((ex) => {
-        this.setState({
-          isErrorOccured: true,
-          errorMessage: ex.errorMessage
-        });
-      });
-  }
+    this.props.sharepointdataProvider.getCurrentUser().then(
+      (item: any) => {
+          console.log("Fetched user details");
+          this.props.sharepointdataProvider.getPollLogByUser(item.Id).then(
+              (pollitems: number[]) => {
+                  console.log("Fetched Poll answered details");
+                  this.props.sharepointdataProvider.readsPollItemsFromList(pollitems)
+                  .then(
+                    //resolve
+                    (items: IPollObject[]) => {
+                      this.setState({
+                        pollItems: items
+                      });
+                    },
+                    //reject
+                    (data: any) => {
+                      this.setState({
+                        isErrorOccured: true,
+                        errorMessage: data
+                      });
+                    }
+                  ).catch((ex) => {
+                    this.setState({
+                      isErrorOccured: true,
+                      errorMessage: ex.errorMessage
+                    });
+                  });
+              },
+              (rejdata: any) => {
+                  console.log(rejdata);
+              }).catch((ex) => {
+                  console.log(ex.errorMessage);
+              });
+      },
+      (rejdata: any) => {
+          console.log(rejdata);
+      }).catch((ex) => {
+      console.log(ex.errorMessage);
+  });
+}
 
   public render(): React.ReactElement<IPollsSpfxProps> {
+    console.log("React component render");
     this._currentIndex = _.findIndex(this.state.pollItems, { CurrentPollItem: true });
 
     this._PrevIndex = this._currentIndex < this.state.pollItems.length - 1 ? this._currentIndex + 1 : -1;
