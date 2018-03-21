@@ -11,19 +11,18 @@ export default class SharepointDataProvider implements IDataProvider {
     private _webpartContext: IWebPartContext;
     private _pollsAnswered: number[];
     private _currentUser: any;
+    private _webAbsoluteUrl: string;
 
     constructor(value: IWebPartContext) {
         console.log("Data provider log");
         this._webpartContext = value;
-        
+        this._webAbsoluteUrl = value.pageContext.web.absoluteUrl;
     }
 
-   
 
-    public readsPollItemsFromList(pollsAnswered:number[]): Promise<IPollObject[]> {
-        debugger;
-        console.log("Data provider read poll items function");
-        const querygetAllItems = "https://oaktondidata.sharepoint.com/tstPoll/_api/Web/Lists/getByTitle('Poll Questions')/Items?&$select=ID,Question,Options,Published_x0020_Date,Expiry_x0020_Date,PollCount";
+    //This method for fetching the all the Poll Items which are not expired
+    public readsPollItemsFromList(pollsAnswered: number[]): Promise<IPollObject[]> {
+        const querygetAllItems = this._webAbsoluteUrl + "/_api/Web/Lists/getByTitle('Poll Questions')/Items?&$select=ID,Question,Options,Published_x0020_Date,Expiry_x0020_Date,PollCount";
 
         return this._webpartContext.spHttpClient.get(querygetAllItems, SPHttpClient.configurations.v1).then(
             (response: any) => {
@@ -33,7 +32,7 @@ export default class SharepointDataProvider implements IDataProvider {
                 else { return Promise.reject(new Error(JSON.stringify(response))); }
             })
             .then((data: any) => {
-                debugger;
+                //debugger;
                 let items: IPollObject[] = [];
                 if (data) {
                     for (let i = 0; i < data.value.length; i++) {
@@ -52,7 +51,7 @@ export default class SharepointDataProvider implements IDataProvider {
                                 }
                             }
                         }
-                        debugger;
+                        //debugger;
                         var item: IPollObject = {
                             Id: data.value[i].ID,
                             PollQuestion: data.value[i].Question,
@@ -73,8 +72,9 @@ export default class SharepointDataProvider implements IDataProvider {
             });
     }
 
+    //This method is for submitting the selected option to the list
     public submitPollResult(data: IPollObject): Promise<any> {
-        const querypostitemurl = "https://oaktondidata.sharepoint.com/TstPoll/_api/Web/Lists/getByTitle('Poll Questions')/Items";
+        const querypostitemurl = this._webAbsoluteUrl + "/_api/Web/Lists/getByTitle('PollLog')/Items";
         const httpclientoptions: ISPHttpClientOptions = {
             body: JSON.stringify({ Title: data.PollQuestion, Answer: data.SelectedOptionkey, QuestionID: data.Id.toString() })
         };
@@ -89,8 +89,9 @@ export default class SharepointDataProvider implements IDataProvider {
             });
     }
 
+    //This method is for updating the Poll count in the Poll Questions list
     public updatePollCount(pollid: number, count: number) {
-        const url = "https://oaktondidata.sharepoint.com/TstPoll/_api/Web/Lists/getByTitle('Poll Questions')/Items(@v1)?&@v1=" + pollid;
+        const url = this._webAbsoluteUrl + "/_api/Web/Lists/getByTitle('Poll Questions')/Items(@v1)?&@v1=" + pollid;
         const httpclientoptions: ISPHttpClientOptions = {
             body: JSON.stringify({ PollCount: count })
         };
@@ -103,9 +104,10 @@ export default class SharepointDataProvider implements IDataProvider {
 
     }
 
+    //This method is for getting the options by all the users for a poll question
     public getResultsData(pollid: number, options: string[]): Promise<number[]> {
         //debugger;
-        const url = "https://oaktondidata.sharepoint.com/TstPoll/_api/Web/Lists/getByTitle('PollLog')/Items?&$select=Answer,QuestionID,Author/Name &$expand=Author/Id &$filter=QuestionID eq " + pollid;
+        const url = this._webAbsoluteUrl + "/_api/Web/Lists/getByTitle('PollLog')/Items?&$select=Answer,QuestionID,Author/Name &$expand=Author/Id &$filter=QuestionID eq " + pollid;
 
         return this._webpartContext.spHttpClient.get(url, SPHttpClient.configurations.v1)
             .then((response: any) => {
@@ -129,7 +131,7 @@ export default class SharepointDataProvider implements IDataProvider {
     //Method for fetching all the polls answered by the user.
     public getPollLogByUser(userId: number): Promise<number[]> {
         //debugger;
-        const url = "https://oaktondidata.sharepoint.com/TstPoll/_api/Web/Lists/getByTitle('PollLog')/Items?&$select=QuestionID,Editor/Name &$expand=Editor/Id &$filter=Editor/Id eq '11'";
+        const url = this._webAbsoluteUrl + "/_api/Web/Lists/getByTitle('PollLog')/Items?&$select=QuestionID,Editor/Name &$expand=Editor/Id &$filter=Editor/Id eq " + userId;
 
         return this._webpartContext.spHttpClient.get(url, SPHttpClient.configurations.v1)
             .then((response: any) => {
@@ -151,9 +153,10 @@ export default class SharepointDataProvider implements IDataProvider {
             });
     }
 
+    // method for fetching the details of the current user
     public getCurrentUser(): Promise<any> {
         //debugger;
-        const url = "https://oaktondidata.sharepoint.com/TstPoll/_api/Web/CurrentUser";
+        const url = this._webAbsoluteUrl + "/_api/Web/CurrentUser";
 
         return this._webpartContext.spHttpClient.get(url, SPHttpClient.configurations.v1)
             .then((response: any) => {

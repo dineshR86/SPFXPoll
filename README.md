@@ -28,7 +28,7 @@ gulp package-solution - TODO
 Todo
 ## Display the no of votes  
 ##Display the results. Use react chart 
-Style the poll webpart
-Remove hardcoding 
-Performace improvement and testing
+##Style the poll webpart 
+##Remove hardcoding 
+##Performace improvement and testing
 

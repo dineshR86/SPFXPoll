@@ -27,6 +27,7 @@ export default class PollsSpfxWebPart extends BaseClientSideWebPart<IPollsSpfxWe
 
     this._dataProvider = new MockUpDataProvider();
     console.log("Poll Webpart on Init");
+    debugger;
     this._sharepointdataProvider= new SharepointDataProvider(this.context);
     return super.onInit();
   }

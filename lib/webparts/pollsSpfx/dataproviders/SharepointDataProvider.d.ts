@@ -5,6 +5,7 @@ export default class SharepointDataProvider implements IDataProvider {
     private _webpartContext;
     private _pollsAnswered;
     private _currentUser;
+    private _webAbsoluteUrl;
     constructor(value: IWebPartContext);
     readsPollItemsFromList(pollsAnswered: number[]): Promise<IPollObject[]>;
     submitPollResult(data: IPollObject): Promise<any>;

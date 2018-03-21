@@ -102,7 +102,7 @@ export default class PollsSpfx extends React.Component<IPollsSpfxProps, IPollSpf
           <div className={styles.row}>
             <div className={styles.columnbuttons}>
               <IconButton data-automation-id='test' title='Previous Poll' iconProps={{ iconName: 'DoubleChevronLeftMed' }} onClick={this._onPrevClick} disabled={this._PrevIndex >= 0 ? false : true} />
-              <DefaultButton data-automation-id='test' onClick={this._onVoteClick} hidden={pollitem.Showresults} title='Vote'> Vote </DefaultButton>
+              <DefaultButton data-automation-id='test' onClick={this._onVoteClick} hidden={pollitem.Showresults} title='Vote' disabled={pollitem.Showresults}> Vote </DefaultButton>
               <IconButton data-automation-id='test' title='Next Poll' iconProps={{ iconName: 'DoubleChevronLeftMedMirrored' }} onClick={this._onNextClick} disabled={this._NextIndex >= 0 ? false : true} />
             </div>
           </div>
@@ -153,7 +153,7 @@ export default class PollsSpfx extends React.Component<IPollsSpfxProps, IPollSpf
   @autobind
   private _onPrevClick() {
     //ev.preventDefault();
-    debugger;
+    //debugger;
     let locpollItems = this.state.pollItems;
     let prevpollitem = _.nth(locpollItems, this._PrevIndex);
     let rendpollitem = _.nth(locpollItems, this._currentIndex);
@@ -172,7 +172,7 @@ export default class PollsSpfx extends React.Component<IPollsSpfxProps, IPollSpf
   @autobind
   private _onNextClick() {
     //ev.preventDefault();
-    debugger;
+    //debugger;
     let locpollItems = this.state.pollItems;
     let nextpollitem = _.nth(locpollItems, this._NextIndex);
     let rendpollitem = _.nth(locpollItems, this._currentIndex);

@@ -56,11 +56,12 @@ public componentDidMount():void{
        this.convertedColors = defaults.global.colors.map((txt) => this.convertColor(txt));
        // -- from angular-chart.js
        debugger;
-       var options:string[]=[];
+       let options:string[]=[];
        _.forEach(this.props.pollobject.Options,(value)=>{options.push(value.text);});
        this.props.dataProvider.getResultsData(this.props.pollobject.Id,options)
        .then(
            (items:number[])=>{
+             debugger;
             this.data={
                 labels:options,
                 datasets:[merge({},this.convertedColors[0],{
@@ -83,12 +84,44 @@ public componentDidMount():void{
        
 }
 
-public render(): React.ReactElement<IResultProps>{
+public componentWillReceiveProps(nextProps):void{
+  debugger;
+  let options:string[]=[];
+  let chartLabel:string=nextProps.pollobject.PollQuestion;
+  _.forEach(nextProps.pollobject.Options,(value:any)=>{options.push(value.text);});
+  this.props.dataProvider.getResultsData(nextProps.pollobject.Id,options)
+  .then(
+      (items:number[])=>{
+       debugger;
+        this.data={
+           labels:options,
+           datasets:[merge({},this.convertedColors[2],{
+               label:chartLabel,
+               data:items
+           })]
+       };
+       this.setState({results:this.data});
+      },
+      (data:any) =>{
+       this.setState({
+           errorMessage: data
+         });
+      }
+  ).catch((ex) => {
+   this.setState({
+     errorMessage: ex.errorMessage
+   });
+ });
 
+}
+
+
+
+public render(): React.ReactElement<IResultProps>{
+  debugger;
     return (
         <div>
-            <h2>Poll Result Example</h2>
-            <HorizontalBar data={this.data} />
+            <HorizontalBar data={this.state.results} />
         </div>
     );
 }

@@ -9,6 +9,7 @@ export declare class Results extends React.Component<IResultProps, IResultState>
     private options;
     constructor(props: IResultProps);
     componentDidMount(): void;
+    componentWillReceiveProps(nextProps: any): void;
     render(): React.ReactElement<IResultProps>;
     private convertColor(color);
     private getRandomColor();
