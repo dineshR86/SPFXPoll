@@ -15,16 +15,16 @@ export default class SharepointDataProvider implements IDataProvider {
     constructor(value: IWebPartContext) {
         console.log("Data provider log");
         this._webpartContext = value;
-        
+
     }
 
-   
 
-    public readsPollItemsFromList(pollsAnswered:number[]): Promise<IPollObject[]> {
+    // for fetching the poll items from the list based on the published date and expiry date.
+    public readsPollItemsFromList(pollsAnswered: number[]): Promise<IPollObject[]> {
         debugger;
         console.log("Data provider read poll items function");
-        const querygetAllItems = "https://oaktondidata.sharepoint.com/tstPoll/_api/Web/Lists/getByTitle('Poll Questions')/Items?&$select=ID,Question,Options,Published_x0020_Date,Expiry_x0020_Date,PollCount";
-
+        let todaysDate = new Date().toISOString();
+        const querygetAllItems = "https://oaktondidata.sharepoint.com/tstPoll/_api/Web/Lists/getByTitle('Poll Questions')/Items?&$select=ID,Question,Options,Published_x0020_Date,Expiry_x0020_Date,PollCount&$filter=(Expiry_x0020_Date ge datetime'" + todaysDate + "') and (Published_x0020_Date le datetime'" + todaysDate + "')";
         return this._webpartContext.spHttpClient.get(querygetAllItems, SPHttpClient.configurations.v1).then(
             (response: any) => {
                 if (response.status >= 200 && response.status < 300) {
