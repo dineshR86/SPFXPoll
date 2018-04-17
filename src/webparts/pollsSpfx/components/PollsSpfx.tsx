@@ -71,6 +71,7 @@ export default class PollsSpfx extends React.Component<IPollsSpfxProps, IPollSpf
 }
 
   public render(): React.ReactElement<IPollsSpfxProps> {
+    debugger;
     console.log("React component render");
     this._currentIndex = _.findIndex(this.state.pollItems, { CurrentPollItem: true });
 

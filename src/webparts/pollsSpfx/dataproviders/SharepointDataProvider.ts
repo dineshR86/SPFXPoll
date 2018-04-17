@@ -16,16 +16,20 @@ export default class SharepointDataProvider implements IDataProvider {
     constructor(value: IWebPartContext) {
         console.log("Data provider log");
         this._webpartContext = value;
-        this._webAbsoluteUrl = value.pageContext.web.absoluteUrl;
+        this._webAbsoluteUrl=value.pageContext.web.absoluteUrl;
     }
 
 
-    //This method for fetching the all the Poll Items which are not expired
+    // for fetching the poll items from the list based on the published date and expiry date.
     public readsPollItemsFromList(pollsAnswered: number[]): Promise<IPollObject[]> {
-        const querygetAllItems = this._webAbsoluteUrl + "/_api/Web/Lists/getByTitle('Poll Questions')/Items?&$select=ID,Question,Options,Published_x0020_Date,Expiry_x0020_Date,PollCount";
-
+        //debugger;
+        console.log("Data provider read poll items function");
+        let todaysDate = new Date().toISOString();
+        //In rest api for filtering using date need to cast the value of datetime parameter using the datetime
+        const querygetAllItems = this._webAbsoluteUrl+ "/_api/Web/Lists/getByTitle('Poll Questions')/Items?&$select=ID,Question,Options,Published_x0020_Date,Expiry_x0020_Date,PollCount&$filter=(Expiry_x0020_Date ge datetime'" + todaysDate + "') and (Published_x0020_Date le datetime'" + todaysDate + "')";
         return this._webpartContext.spHttpClient.get(querygetAllItems, SPHttpClient.configurations.v1).then(
             (response: any) => {
+                //debugger;
                 if (response.status >= 200 && response.status < 300) {
                     return response.json();
                 }
@@ -58,7 +62,7 @@ export default class SharepointDataProvider implements IDataProvider {
                             PublishedDate: data.value[i].Published_x0020_Date,
                             ExpiryDate: data.value[i].Expiry_x0020_Date,
                             Options: pollOptions,
-                            CurrentPollItem: data.value[i].ID == 1 ? true : false,
+                            CurrentPollItem: i == 0 ? true : false,
                             Showresults: _.indexOf(pollsAnswered, data.value[i].ID.toString()) >= 0 ? true : false,
                             PollCount: data.value[i].PollCount
                         };
