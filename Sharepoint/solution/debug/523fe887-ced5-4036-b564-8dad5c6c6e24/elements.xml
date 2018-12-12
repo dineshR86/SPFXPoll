@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+<Field ID="{7a6cd49f-3f02-4df5-ab87-41de029403bf}" Name="Question" DisplayName="Question" Type="Text" Group="Poll Columns" Required="False" />
+<Field ID="{0b47634e-c946-473b-bde9-c60408449e39}" Name="Published Date" DisplayName="Published Date" Type="DateTime" Group="Poll Columns" Required="False" Format="DateOnly" />
+<Field ID="{48631a23-04d8-44c9-a45f-b51890532f54}" Name="Expiry Date" DisplayName="Expiry Date" Type="DateTime" Group="Poll Columns" Required="False" Format="DateOnly" />
+<Field ID="{5b1212db-86ac-4bd0-8972-f39c8c62f6aa}" Name="Options" DisplayName="Options" Type="Note" Group="Poll Columns" Required="False" NumLines="8" RichText="False" />
+<Field ID="{660c6e10-c16f-4ab3-9912-bda24bb93e29}" Name="PollCount" DisplayName="Poll Count" Type="Number" Group="Poll Columns" Required="False" />
+<Field ID="{28ce7e71-365f-4462-a7b9-6fdd61cc053e}" Name="Answer" DisplayName="Answer" Type="Text" Group="Poll Columns" Required="False" />
+<Field ID="{5f09eaaf-aeae-4d54-9503-f3f044c407e3}" Name="QuestionID" DisplayName="QuestionID" Type="Text" Group="Poll Columns" Required="False" />
+
+<ContentType ID="0x0100589962cc1951477383142e38c7cd26a5" 
+        Name="Poll Question CT" 
+        Group="Poll Content Types" 
+        Description="Content type for the poll question list">
+    <FieldRefs>
+        <FieldRef ID="{7a6cd49f-3f02-4df5-ab87-41de029403bf}" /> 
+        <FieldRef ID="{0b47634e-c946-473b-bde9-c60408449e39}" />
+        <FieldRef ID="{48631a23-04d8-44c9-a45f-b51890532f54}" />
+        <FieldRef ID="{5b1212db-86ac-4bd0-8972-f39c8c62f6aa}" />
+        <FieldRef ID="{660c6e10-c16f-4ab3-9912-bda24bb93e29}" />
+    </FieldRefs>
+</ContentType>
+
+<ContentType ID="0x0100a31f75e7c70f40d0a0974af944b980d5" 
+        Name="Poll Log CT" 
+        Group="Poll Content Types" 
+        Description="Content type for the poll log list">
+    <FieldRefs>
+        <FieldRef ID="{28ce7e71-365f-4462-a7b9-6fdd61cc053e}" /> 
+        <FieldRef ID="{5f09eaaf-aeae-4d54-9503-f3f044c407e3}" />
+    </FieldRefs>
+</ContentType>
+
+
+<ListInstance 
+        CustomSchema="schema.xml"
+        FeatureId="00bfea71-de22-43b2-a848-c05709900100"
+        Title="PollQuestions" 
+        Description="List for storing the Poll Questions and Options"
+        TemplateType="100"
+        Url="Lists/PollQuestions">
+</ListInstance>
+
+<ListInstance 
+        CustomSchema="schema1.xml"
+        FeatureId="00bfea71-de22-43b2-a848-c05709900100"
+        Title="PollLog" 
+        Description="List for storing the Poll logs"
+        TemplateType="100"
+        Url="Lists/PollLog">
+</ListInstance>
+
+</Elements>

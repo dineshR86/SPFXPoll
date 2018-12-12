@@ -796,11 +796,6 @@ function getManifests() {
           "version": "1.4.1",
           "id": "974a7777-0990-4136-8fa6-95d80114c2e0"
         },
-        "@microsoft/sp-lodash-subset": {
-          "type": "component",
-          "version": "1.4.1",
-          "id": "73e1dc6c-8441-42cc-ad47-4bd3659f8a3a"
-        },
         "@microsoft/sp-http": {
           "type": "component",
           "version": "1.4.1",

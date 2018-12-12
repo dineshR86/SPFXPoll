@@ -26,7 +26,7 @@ export default class SharepointDataProvider implements IDataProvider {
         console.log("Data provider read poll items function");
         let todaysDate = new Date().toISOString();
         //In rest api for filtering using date need to cast the value of datetime parameter using the datetime
-        const querygetAllItems = this._webAbsoluteUrl+ "/_api/Web/Lists/getByTitle('Poll Questions')/Items?&$select=ID,Question,Options,Published_x0020_Date,Expiry_x0020_Date,PollCount&$filter=(Expiry_x0020_Date ge datetime'" + todaysDate + "') and (Published_x0020_Date le datetime'" + todaysDate + "')";
+        const querygetAllItems = this._webAbsoluteUrl+ "/_api/Web/Lists/getByTitle('PollQuestions')/Items?&$select=ID,Question,Options,Published_x0020_Date,Expiry_x0020_Date,PollCount&$filter=(Expiry_x0020_Date ge datetime'" + todaysDate + "') and (Published_x0020_Date le datetime'" + todaysDate + "')";
         return this._webpartContext.spHttpClient.get(querygetAllItems, SPHttpClient.configurations.v1).then(
             (response: any) => {
                 //debugger;
@@ -95,7 +95,7 @@ export default class SharepointDataProvider implements IDataProvider {
 
     //This method is for updating the Poll count in the Poll Questions list
     public updatePollCount(pollid: number, count: number) {
-        const url = this._webAbsoluteUrl + "/_api/Web/Lists/getByTitle('Poll Questions')/Items(@v1)?&@v1=" + pollid;
+        const url = this._webAbsoluteUrl + "/_api/Web/Lists/getByTitle('PollQuestions')/Items(@v1)?&@v1=" + pollid;
         const httpclientoptions: ISPHttpClientOptions = {
             body: JSON.stringify({ PollCount: count })
         };

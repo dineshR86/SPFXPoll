@@ -16,14 +16,6 @@ export class Results extends React.Component<IResultProps, IResultState>{
 
   constructor(props: IResultProps) {
     super(props);
-
-    this.state = {
-      results: this.data
-    };
-  }
-
-  public componentDidMount(): void {
-    // from angular-chart.js
     defaults.global.tooltips.mode = 'label';
     defaults.global.elements.line.borderWidth = 2;
     defaults.global.elements.rectangle.borderWidth = 2;
@@ -37,16 +29,22 @@ export class Results extends React.Component<IResultProps, IResultState>{
       '#949FB1', // grey
       '#4D5360'  // dark grey
     ];
-    debugger;
+    this.state = {
+      results: this.data
+    };
+  }
+
+  //This event is invoked immediately after a component is mounted. 
+  public componentDidMount(): void {
     let options: any[] = [];
-    _.forEach(this.props.pollobject.Options, (value) => { 
-      options.push(value.text); 
+    _.forEach(this.props.pollobject.Options, (value) => {
+      debugger; 
       if(value.text.length>20){
         let optarray:string[]=[];
           let sposition:number=0;
-          for(let i=0; i<= (value.text.length/20); i++){
-            optarray.push(value.text.substr(sposition,20));
-            sposition=sposition+20;
+          for(let i=0; i<= (value.text.length/25); i++){
+            optarray.push(value.text.substr(sposition,25));
+            sposition=sposition+25;
           }
           options.push(optarray);
       }
@@ -80,11 +78,27 @@ export class Results extends React.Component<IResultProps, IResultState>{
 
   }
 
-  public componentWillReceiveProps(nextProps): void {
+  //this event is fired when ever a mounted component receives new props.  
+  //If you need to update the state in response to prop changes (for example, to reset it), you may compare this.props and nextProps and perform state transitions using this.setState() in this method.
+  // React dosent call this method intially when mounting.
+  public componentWillReceiveProps(nextProps:IResultProps): void {
     debugger;
-    let options: string[] = [];
+    let options: any[] = [];
     let chartLabel: string = nextProps.pollobject.PollQuestion;
-    _.forEach(nextProps.pollobject.Options, (value: any) => { options.push(value.text); });
+    _.forEach(nextProps.pollobject.Options, (value) => { 
+      if(value.text.length>25){
+        let optarray:string[]=[];
+          let sposition:number=0;
+          for(let i=0; i<= (value.text.length/25); i++){
+            optarray.push(value.text.substr(sposition,25));
+            sposition=sposition+25;
+          }
+          options.push(optarray);
+      }
+      else{
+        options.push(value.text);
+      }
+    });
     this.props.dataProvider.getResultsData(nextProps.pollobject.Id, options)
       .then(
         (items: number[]) => {
@@ -114,8 +128,6 @@ export class Results extends React.Component<IResultProps, IResultState>{
 
 
   public render(): React.ReactElement<IResultProps> {
-    debugger;
-
     this.options = {
       scales: {
         xAxes: [{
@@ -133,10 +145,8 @@ export class Results extends React.Component<IResultProps, IResultState>{
         yAxes: [{
           ticks: {
             callback: (label: string, index, labels) => {
-              return label.length > 20 ? label.substring(0, 20) + "..." : label;
-            },
-            fontSize: 18,
-            fontColor: 'black'
+              return label;
+            }
           },
           display: true
         }]

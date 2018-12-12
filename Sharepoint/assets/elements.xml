@@ -35,16 +35,16 @@
 <ListInstance 
         CustomSchema="schema.xml"
         FeatureId="00bfea71-de22-43b2-a848-c05709900100"
-        Title="Poll Question" 
+        Title="PollQuestions" 
         Description="List for storing the Poll Questions and Options"
         TemplateType="100"
-        Url="Lists/PollQuestion">
+        Url="Lists/PollQuestions">
 </ListInstance>
 
 <ListInstance 
         CustomSchema="schema1.xml"
         FeatureId="00bfea71-de22-43b2-a848-c05709900100"
-        Title="Poll Log" 
+        Title="PollLog" 
         Description="List for storing the Poll logs"
         TemplateType="100"
         Url="Lists/PollLog">
